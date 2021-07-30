@@ -1,0 +1,92 @@
+@startuml
+
+package Service #YellowGreen {
+
+    class DocumentService {
+      sendDocument(sender, receiver, data)
+      getDocument(id)
+    }
+
+    note right of DocumentService
+      Базовый класс для работы с документами
+    end note
+
+    class DiadocDocumentService extends DocumentService {
+      sendDocument(sender, receiver, data)
+      getDocument(id)
+    }
+    note right of DiadocDocumentService::sendDocument
+      ключами для поиска получателя
+      и отправителя можно сделать ИНН {inn}
+    end note
+
+    note left of  DiadocDocumentService
+      Реализация отправки через DiaDoc
+    end note
+
+
+    class TestDocumentService extends DocumentService {
+      sendDocument(sender, receiver, data)
+      getDocument(id)
+    }
+
+    note right of  TestDocumentService
+      Реализация "тестовой" отправки
+      ("заглушка")
+    end note
+}
+
+package Diadoc #Orange {
+
+  class DiadocClientFactory  <<Фабрика>>{
+    authTokenProvider
+    constructor({ type, login, password, cert })
+    getOrganizationsClient()
+    getMessagesClient()
+  }
+  DiadocClientFactory::getOrganizationsClient ... OrganizationsClient : возвращает
+
+  DiadocClientFactory::getMessagesClient ... MessagesClient : возвращает
+
+  DiadocClientFactory ... AuthTokenProvider : использует
+
+  class AuthTokenProvider <<Авторизатор>>{
+    getAuthToken({ type, login, password, cert })
+  }
+
+  note right of AuthTokenProvider::getAuthToken
+  Метод возвращает <u>функцию</u>,
+  возвращающую auth token [[https://diadoc-sdk.readthedocs.io/ru/latest/http/Authenticate.html API]]
+  end note
+
+  class DiadocClient <<Клиент ДиаДок>>{
+    function authToken
+  }
+  note right of DiadocClient::authToken
+  лямбда-функция authToken без параметров
+  возвращает diadoc auth Token [[https://diadoc-sdk.readthedocs.io/ru/latest/Authorization.html API]]
+  end note
+
+  class OrganizationsClient  <<Работа с организациями>> extends DiadocClient{
+    getMyOgranizations()
+  }
+
+  note right of OrganizationsClient::getMyOgranizations
+  Возвращает список
+  организаций
+  [[https://diadoc-sdk.readthedocs.io/ru/latest/http/GetMyOrganizations.html API]]
+  end note
+
+  class MessagesClient  <<Работа с сообщениями>> extends DiadocClient{
+    postMessage()
+    getMessage(messageId)
+  }
+
+  note right of MessagesClient::postMessage
+  Данный метод используется
+  для отправки документов [[https://diadoc-sdk.readthedocs.io/ru/latest/http/PostMessage.html API]]
+  end note
+
+}
+
+@enduml
