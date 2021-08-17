@@ -1,6 +1,11 @@
-import { authenticate } from '../src/auth.js';
+import Authenticate from '../src/Authenticate.js';
 
 test('authenticate', async () => {
-  const auth = 'zzzzzzzzzzzzzzzz'; //await authenticate({ login: 'user@domain', password: '' });
-  expect(auth.length > 10).toStrictEqual(true);
+  const auth = new Authenticate({
+    login: 'small.ball.92@gmail.com',
+    password: 'LiLi11211992'
+  });
+  await auth.auth();
+  console.log(auth.getToken());
+  expect(auth.getToken().length > 10).toStrictEqual(true);
 });
