@@ -8,8 +8,8 @@ import fs from 'fs';
 
 test('postDocument', async () => {
   const auth = new Authenticate({
-    login: 'small.ball.92@gmail.com',
-    password: 'LiLi11211992'
+    login: process.env.DIADOC_LOGIN,
+    password: process.env.DIADOC_PASSWORD
   });
   const organizacionClient = new OrganizationsClient(auth);
   const myOrganizations = await organizacionClient.getMyOrganizacion();
@@ -34,8 +34,8 @@ test('postDocument', async () => {
 
 test('getDocuments', async () => {
   const auth = new Authenticate({
-    login: 'small.ball.92@gmail.com',
-    password: 'LiLi11211992'
+    login: process.env.DIADOC_LOGIN,
+    password: process.env.DIADOC_PASSWORD
   });
   const organizacionClient = new OrganizationsClient(auth);
   const myOrganizations = await organizacionClient.getMyOrganizacion();
@@ -50,8 +50,8 @@ test('getDocuments', async () => {
 
 test('getDocument', async () => {
   const auth = new Authenticate({
-    login: 'small.ball.92@gmail.com',
-    password: 'LiLi11211992'
+    login: process.env.DIADOC_LOGIN,
+    password: process.env.DIADOC_PASSWORD
   });
   const organizacionClient = new OrganizationsClient(auth);
   const myOrganizations = await organizacionClient.getMyOrganizacion();
@@ -72,8 +72,8 @@ test('getDocument', async () => {
 
 test('GetEntityContent', async () => {
   const auth = new Authenticate({
-    login: 'small.ball.92@gmail.com',
-    password: 'LiLi11211992'
+    login: process.env.DIADOC_LOGIN,
+    password: process.env.DIADOC_PASSWORD
   });
   const organizacionClient = new OrganizationsClient(auth);
   const myOrganizations = await organizacionClient.getMyOrganizacion();
