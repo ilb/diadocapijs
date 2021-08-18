@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import Authenticate from '../src/Authenticate.js';
 import OrganizationsClient from '../src/OrganizationsClient.js';
 

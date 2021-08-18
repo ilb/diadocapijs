@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config();
 import fetch from 'isomorphic-fetch';
 
 export default class OrganizationsClient {

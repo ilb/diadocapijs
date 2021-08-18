@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import Authenticate from '../src/Authenticate.js';
 
 test('authenticate', async () => {

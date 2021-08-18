@@ -1,8 +1,9 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import Authenticate from '../src/Authenticate.js';
 import DocumentsClient from '../src/DocumentsClient.js';
 import OrganizationsClient from '../src/OrganizationsClient';
 import path from 'path';
-import url from 'url';
 import fs from 'fs';
 
 test('postDocument', async () => {
