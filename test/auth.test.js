@@ -4,8 +4,8 @@ import Authenticate from '../src/Authenticate.js';
 
 test('authenticate', async () => {
   const auth = new Authenticate({
-    login: 'small.ball.92@gmail.com',
-    password: 'LiLi11211992'
+    login: process.env.DIADOC_LOGIN,
+    password: process.env.DIADOC_PASSWORD
   });
   await auth.auth();
   console.log(auth.getToken());
