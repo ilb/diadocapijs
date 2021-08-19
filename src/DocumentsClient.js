@@ -1,17 +1,12 @@
 import fetch from 'isomorphic-fetch';
-import fs from 'fs';
-import path from 'path';
-import { Buffer } from 'buffer';
 
 export default class DocumentsClient {
   constructor(authenticate) {
     this.authenticate = authenticate;
   }
 
-  async postMessage({ FromBoxId, ToBoxId, DelaySend, DocumentPath, TypeNamedId }) {
+  async postMessage({ FromBoxId, ToBoxId, DelaySend, TypeNamedId, Content, Value }) {
     const url = 'https://diadoc-api.kontur.ru/V3/PostMessage';
-    let FileName = path.basename(DocumentPath);
-    let Content = Buffer.from(fs.readFileSync(DocumentPath)).toString('base64');
     const data = {
       FromBoxId,
       ToBoxId,
@@ -24,7 +19,7 @@ export default class DocumentsClient {
           Metadata: [
             {
               Key: 'FileName',
-              Value: FileName
+              Value
             }
           ]
         }
@@ -35,7 +30,6 @@ export default class DocumentsClient {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Content-length': Content.length,
         Accept: 'application/json',
         Authorization:
           'DiadocAuth ' +
@@ -49,7 +43,42 @@ export default class DocumentsClient {
     if (!response.ok) {
       if (response.status == 401) {
         await this.authenticate.auth();
-        return this.postMessage({ FromBoxId, ToBoxId, DelaySend, DocumentPath, TypeNamedId });
+        return this.postMessage({ FromBoxId, ToBoxId, DelaySend, TypeNamedId, Content, Value });
+      } else {
+        const text = await response.text();
+        throw new Error(text);
+      }
+    }
+    const text = await response.json();
+    return text;
+  }
+
+  async postMessageArray({ FromBoxId, ToBoxId, DelaySend, DocumentAttachments }) {
+    const url = 'https://diadoc-api.kontur.ru/V3/PostMessage';
+    const data = {
+      FromBoxId,
+      ToBoxId,
+      DocumentAttachments,
+      DelaySend
+    };
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization:
+          'DiadocAuth ' +
+          process.env.API_CLIENT_ID +
+          ',ddauth_token=' +
+          this.authenticate.getToken()
+      },
+      body: JSON.stringify(data)
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      if (response.status == 401) {
+        await this.authenticate.auth();
+        return this.postMessage({ FromBoxId, ToBoxId, DelaySend, DocumentAttachments });
       } else {
         const text = await response.text();
         throw new Error(text);
