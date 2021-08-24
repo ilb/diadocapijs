@@ -43,3 +43,15 @@ test('GetOrganizationsByInnKpp - error', async () => {
   console.log(res);
   expect(typeof res === 'object').toStrictEqual(true);
 });
+
+test('getOrganizationUsers', async () => {
+  const auth = new Authenticate({
+    login: process.env.DIADOC_LOGIN,
+    password: process.env.DIADOC_PASSWORD
+  });
+  const organizacion = new OrganizationsClient(auth);
+  const myOrganizations = await organizacion.getMyOrganizacion();
+  const res = await organizacion.getOrganizationUsers(myOrganizations['Organizations'][0]['OrgId']);
+  console.log(res);
+  expect(typeof res === 'object').toStrictEqual(true);
+});
