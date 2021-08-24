@@ -32,7 +32,8 @@ test('postDocument', async () => {
     DelaySend: true,
     TypeNamedId: documentTypes.DocumentTypes[0].Name,
     Value: FileName,
-    Content
+    Content,
+    NeedRecipientSignature: true // запрос на подпись у получающего
   });
   console.log(res);
   expect(typeof res === 'object').toStrictEqual(true);
@@ -76,7 +77,8 @@ test('postDocumentArray', async () => {
             Key: 'FileName',
             Value: FileName1
           }
-        ]
+        ],
+        NeedRecipientSignature: true // запрос на подпись у получающего
       },
       {
         TypeNamedId: documentTypes.DocumentTypes[0].Name,
@@ -164,5 +166,60 @@ test('GetEntityContent', async () => {
       if (error) throw error; // если возникла ошибка
     }
   );
+  expect(typeof res === 'object').toStrictEqual(true);
+});
+
+test('postMessagePatch', async () => {
+  const auth = new Authenticate({
+    login: process.env.DIADOC_LOGIN,
+    password: process.env.DIADOC_PASSWORD
+  });
+  const organizacionClient = new OrganizationsClient(auth);
+  const myOrganizations = await organizacionClient.getMyOrganizacion();
+  const documentsClient = new DocumentsClient(auth);
+  const getDocuments = await documentsClient.getDocuments(
+    myOrganizations['Organizations'][0]['Boxes'][0]['BoxId'],
+    'Outbound' // Inbound - входящее, Outbound - исхрдящее
+  );
+  const users = await organizacionClient.getOrganizationUsers(
+    myOrganizations['Organizations'][0]['OrgId']
+  );
+  let userId = 0;
+  for (let index = 0; index < users['Users'].length; index++) {
+    if (users['Users'][index]['Permissions']['CanSignDocuments']) {
+      userId = users['Users'][1]['Id'];
+    }
+  }
+  /* расшифровка ответа на получение сотрудников
+    UserDepartmentId - идентификатор подразделения организации, в котором состоит пользователь.
+    В случае головного подразделения содержит значение 00000000-0000-0000-0000-000000000000.
+    IsAdministrator - может ли пользователь редактировать структуру и реквизиты организации, добавлять и редактировать других пользователей.
+    DocumentAccessLevel - уровень доступа к документам
+    CanSignDocuments - может ли пользователь подписывать документы.
+    CanManageCounteragents - может ли пользователь видеть списки контрагентов и работать с ними.
+    CanAddResolutions - может ли пользователь согласовывать документы.
+    CanRequestResolutions - может ли пользователь отправлять запросы на согласование и подпись документов.
+    SelectedDepartmentIds - список подразделений, к которым имеет доступ пользователь (заполняется только в случае DocumentAccessLevel = SelectedDepartments).
+    JobTitle - должность пользователя в организации. Может быть не указана.
+    CanCreateDocuments - может ли пользователь создавать и редактировать документы и черновики
+    AuthorizationPermission - данные о наличии ограничения доступа пользователя к сервису
+    CanDeleteRestoreDocuments - может ли пользователь удалять документы и черновики, восстанавливать документы
+  */
+
+  /* варианты передачи документа
+    ApprovementRequest - запрос на согласование документа. Подразумевает два возможных действия — Согласовать (ApproveAction) или Отказать в согласовании (DisapproveAction).
+    SignatureRequest - запрос на подпись документа. В рамках запроса можно выполнить три действия — Подписать завершающей подписью (SignWithPrimarySignature)/Отказать в подписи контрагенту (RejectSigning) или Отказать в подписи сотруднику (DenySignatureRequest), который запросил подпись.
+    ApprovementSignatureRequest - запрос на согласующую подпись под документом. В рамках данного типа запроса можно либо Подписать согласующей подписью (SignWithApprovementSignature), либо Отказать в подписи сотруднику (DenySignatureRequest), который запросил подпись.
+  */
+  const res = await documentsClient.postMessagePatch(
+    myOrganizations['Organizations'][0]['Boxes'][0]['BoxId'],
+    getDocuments['Documents'][getDocuments['Documents'].length - 1]['MessageId'],
+    getDocuments['Documents'][getDocuments['Documents'].length - 1]['EntityId'],
+    userId,
+    {
+      Type: 'ApprovementRequest'
+    }
+  );
+  console.log(res);
   expect(typeof res === 'object').toStrictEqual(true);
 });
