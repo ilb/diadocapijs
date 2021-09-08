@@ -32,7 +32,7 @@ export default class DocumentsClient {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization:
-          'DiadocAuth ' +
+          'DiadocAuth ddauth_api_client_id=' +
           process.env.API_CLIENT_ID +
           ',ddauth_token=' +
           this.authenticate.getToken()
@@ -67,7 +67,7 @@ export default class DocumentsClient {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization:
-          'DiadocAuth ' +
+          'DiadocAuth ddauth_api_client_id=' +
           process.env.API_CLIENT_ID +
           ',ddauth_token=' +
           this.authenticate.getToken()
@@ -101,7 +101,7 @@ export default class DocumentsClient {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization:
-          'DiadocAuth ' +
+          'DiadocAuth ddauth_api_client_id=' +
           process.env.API_CLIENT_ID +
           ',ddauth_token=' +
           this.authenticate.getToken()
@@ -137,7 +137,7 @@ export default class DocumentsClient {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization:
-          'DiadocAuth ' +
+          'DiadocAuth ddauth_api_client_id=' +
           process.env.API_CLIENT_ID +
           ',ddauth_token=' +
           this.authenticate.getToken()
@@ -170,7 +170,7 @@ export default class DocumentsClient {
       headers: {
         'Content-Type': 'application/json',
         Authorization:
-          'DiadocAuth ' +
+          'DiadocAuth ddauth_api_client_id=' +
           process.env.API_CLIENT_ID +
           ',ddauth_token=' +
           this.authenticate.getToken()
@@ -199,7 +199,7 @@ export default class DocumentsClient {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization:
-          'DiadocAuth ' +
+          'DiadocAuth ddauth_api_client_id=' +
           process.env.API_CLIENT_ID +
           ',ddauth_token=' +
           this.authenticate.getToken()

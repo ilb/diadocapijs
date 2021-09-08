@@ -15,7 +15,7 @@ export default class Authenticate {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'DiadocAuth ' + process.env.API_CLIENT_ID
+        Authorization: 'DiadocAuth ddauth_api_client_id=' + process.env.API_CLIENT_ID
       },
       body: JSON.stringify(data)
     };
