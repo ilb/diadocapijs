@@ -4,7 +4,7 @@ export default class OrganizationsClient {
   constructor(authenticate) {
     this.authenticate = authenticate;
   }
-
+ 
   async getMyOrganizacion() {
     const url = 'https://diadoc-api.kontur.ru/GetMyOrganizations?autoRegister=true';
     const options = {

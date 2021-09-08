@@ -4,7 +4,7 @@ export default class DocumentsClient {
   constructor(authenticate) {
     this.authenticate = authenticate;
   }
-
+ 
   async postMessage({ FromBoxId, ToBoxId, DelaySend, TypeNamedId, Content, Value }) {
     const url = 'https://diadoc-api.kontur.ru/V3/PostMessage';
     const data = {
