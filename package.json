@@ -1,6 +1,6 @@
 {
   "name": "@ilb/diadocapijs",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "API для diadoc",
   "main": "src/index.js",
   "type": "module",
