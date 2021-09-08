@@ -4,35 +4,7 @@ export default class OrganizationsClient {
   constructor(authenticate) {
     this.authenticate = authenticate;
   }
-
-  async getOrganizationUsers(orgId) {
-    const url = 'https://diadoc-api.kontur.ru/GetOrganizationUsers?orgId=' + orgId;
-    const options = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization:
-          'DiadocAuth ' +
-          process.env.API_CLIENT_ID +
-          ',ddauth_token=' +
-          this.authenticate.getToken()
-      }
-    };
-    const response = await fetch(url, options);
-    if (!response.ok) {
-      if (response.status == 401) {
-        await this.authenticate.auth();
-        return this.getOrganizationUsers(orgId);
-      } else {
-        const text = await response.text();
-        throw new Error(text);
-      }
-    }
-    const text = await response.json();
-    return text;
-  }
-
+ 
   async getMyOrganizacion() {
     const url = 'https://diadoc-api.kontur.ru/GetMyOrganizations?autoRegister=true';
     const options = {

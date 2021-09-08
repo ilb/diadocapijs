@@ -4,56 +4,8 @@ export default class DocumentsClient {
   constructor(authenticate) {
     this.authenticate = authenticate;
   }
-
-  async postMessagePatch(BoxId, MessageId, InitialDocumentId, TargetUserId, { Type }) {
-    const url = 'https://diadoc-api.kontur.ru/V3/PostMessagePatch';
-    const data = {
-      BoxId: BoxId,
-      MessageId: MessageId,
-      ResolutionRequests: [
-        {
-          InitialDocumentId: InitialDocumentId,
-          Type,
-          TargetUserId: TargetUserId
-        }
-      ]
-    };
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization:
-          'DiadocAuth ' +
-          process.env.API_CLIENT_ID +
-          ',ddauth_token=' +
-          this.authenticate.getToken()
-      },
-      body: JSON.stringify(data)
-    };
-    const response = await fetch(url, options);
-    if (!response.ok) {
-      if (response.status == 401) {
-        await this.authenticate.auth();
-        return this.postMessagePatch(BoxId, MessageId, InitialDocumentId, TargetUserId);
-      } else {
-        const text = await response.text();
-        throw new Error(text);
-      }
-    }
-    const text = await response.json();
-    return text;
-  }
-
-  async postMessage({
-    FromBoxId,
-    ToBoxId,
-    DelaySend,
-    TypeNamedId,
-    Content,
-    Value,
-    NeedRecipientSignature
-  }) {
+ 
+  async postMessage({ FromBoxId, ToBoxId, DelaySend, TypeNamedId, Content, Value }) {
     const url = 'https://diadoc-api.kontur.ru/V3/PostMessage';
     const data = {
       FromBoxId,

@@ -5,7 +5,7 @@ export default class Authenticate {
     this.login = login;
     this.password = password;
   }
-
+ 
   async auth() {
     const url = 'https://diadoc-api.kontur.ru/V3/Authenticate?type=password';
     const login = this.login;
