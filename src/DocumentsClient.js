@@ -267,4 +267,39 @@ export default class DocumentsClient {
     const text = await response.json();
     return text;
   }
+
+  async generatePrintForm(boxId, messageId, documentId) {
+    const url =
+      'https://diadoc-api.kontur.ru/GeneratePrintForm?boxId=' +
+      boxId +
+      '&messageId=' +
+      messageId +
+      '&documentId' +
+      documentId;
+
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization:
+          'DiadocAuth ' +
+          process.env.API_CLIENT_ID +
+          ',ddauth_token=' +
+          this.authenticate.getToken()
+      }
+    };
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      if (response.status == 401) {
+        await this.authenticate.auth();
+        return this.generatePrintForm(boxId, messageId, documentId);
+      } else {
+        const text = await response.text();
+        throw new Error(text);
+      }
+    }
+    const text = await response.buffer();
+    return text;
+  }
 }
