@@ -223,3 +223,24 @@ test('postMessagePatch', async () => {
   console.log(res);
   expect(typeof res === 'object').toStrictEqual(true);
 });
+
+test('printDocument', async () => {
+  const auth = new Authenticate({
+    login: process.env.DIADOC_LOGIN,
+    password: process.env.DIADOC_PASSWORD
+  });
+  const organizacionClient = new OrganizationsClient(auth);
+  const myOrganizations = await organizacionClient.getMyOrganizacion();
+  const documentsClient = new DocumentsClient(auth);
+  const getDocuments = await documentsClient.getDocuments(
+    myOrganizations['Organizations'][0]['Boxes'][0]['BoxId'],
+    'Outbound' // Inbound - входящее, Outbound - исхрдящее
+  );
+  const res = await documentsClient.generatePrintForm(
+    myOrganizations['Organizations'][0]['Boxes'][0]['BoxId'],
+    getDocuments['Documents'][0]['MessageId'],
+    getDocuments['Documents'][0]['EntityId']
+  );
+  console.log(res);
+  expect(typeof res === 'object').toStrictEqual(true);
+});
