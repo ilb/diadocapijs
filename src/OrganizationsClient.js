@@ -4,7 +4,7 @@ export default class OrganizationsClient {
   constructor(authenticate) {
     this.authenticate = authenticate;
   }
-
+ 
   async getOrganizationUsers(orgId) {
     const url = 'https://diadoc-api.kontur.ru/GetOrganizationUsers?orgId=' + orgId;
     const options = {
@@ -13,8 +13,8 @@ export default class OrganizationsClient {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization:
-          'DiadocAuth ' +
-          process.env.API_CLIENT_ID +
+        'DiadocAuth ddauth_api_client_id=' +
+        process.env.API_CLIENT_ID +
           ',ddauth_token=' +
           this.authenticate.getToken()
       }
@@ -33,6 +33,7 @@ export default class OrganizationsClient {
     return text;
   }
 
+
   async getMyOrganizacion() {
     const url = 'https://diadoc-api.kontur.ru/GetMyOrganizations?autoRegister=true';
     const options = {
@@ -41,7 +42,7 @@ export default class OrganizationsClient {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization:
-          'DiadocAuth ' +
+          'DiadocAuth ddauth_api_client_id=' +
           process.env.API_CLIENT_ID +
           ',ddauth_token=' +
           this.authenticate.getToken()
@@ -70,7 +71,7 @@ export default class OrganizationsClient {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization:
-          'DiadocAuth ' +
+          'DiadocAuth ddauth_api_client_id=' +
           process.env.API_CLIENT_ID +
           ',ddauth_token=' +
           this.authenticate.getToken()
