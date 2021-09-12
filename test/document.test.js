@@ -238,8 +238,8 @@ test('printDocument', async () => {
   );
   const res = await documentsClient.generatePrintForm(
     myOrganizations['Organizations'][0]['Boxes'][0]['BoxId'],
-    getDocuments['Documents'][0]['MessageId'],
-    getDocuments['Documents'][0]['EntityId']
+    getDocuments['Documents'][getDocuments['Documents'].length - 1]['MessageId'],
+    getDocuments['Documents'][getDocuments['Documents'].length - 1]['EntityId']
   );
   console.log(res);
   expect(typeof res === 'object').toStrictEqual(true);
