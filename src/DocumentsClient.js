@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+import Timeout from 'await-timeout';
 
 export default class DocumentsClient {
   constructor(authenticate) {
@@ -33,16 +34,15 @@ export default class DocumentsClient {
     };
     const response = await fetch(url, options);
     if (!response.ok) {
-      if (response.status == 401) {
+      if (response.status === 401) {
         await this.authenticate.auth();
-        return this.postMessagePatch(BoxId, MessageId, InitialDocumentId, TargetUserId);
+        return await this.postMessagePatch(BoxId, MessageId, InitialDocumentId, TargetUserId);
       } else {
         const text = await response.text();
         throw new Error(text);
       }
     }
-    const text = await response.json();
-    return text;
+    return await response.json();
   }
 
   async postMessage({
@@ -90,16 +90,22 @@ export default class DocumentsClient {
     };
     const response = await fetch(url, options);
     if (!response.ok) {
-      if (response.status == 401) {
+      if (response.status === 401) {
         await this.authenticate.auth();
-        return this.postMessage({ FromBoxId, ToBoxId, DelaySend, TypeNamedId, Content, Value });
+        return await this.postMessage({
+          FromBoxId,
+          ToBoxId,
+          DelaySend,
+          TypeNamedId,
+          Content,
+          Value
+        });
       } else {
         const text = await response.text();
         throw new Error(text);
       }
     }
-    const text = await response.json();
-    return text;
+    return await response.json();
   }
 
   async postMessageArray({ FromBoxId, ToBoxId, DelaySend, DocumentAttachments }) {
@@ -125,16 +131,15 @@ export default class DocumentsClient {
     };
     const response = await fetch(url, options);
     if (!response.ok) {
-      if (response.status == 401) {
+      if (response.status === 401) {
         await this.authenticate.auth();
-        return this.postMessage({ FromBoxId, ToBoxId, DelaySend, DocumentAttachments });
+        return await this.postMessage({ FromBoxId, ToBoxId, DelaySend, DocumentAttachments });
       } else {
         const text = await response.text();
         throw new Error(text);
       }
     }
-    const text = await response.json();
-    return text;
+    return await response.json();
   }
 
   async getDocuments(boxId, Outbound) {
@@ -158,16 +163,15 @@ export default class DocumentsClient {
     };
     const response = await fetch(url, options);
     if (!response.ok) {
-      if (response.status == 401) {
+      if (response.status === 401) {
         await this.authenticate.auth();
-        return this.getDocuments(boxId, Outbound);
+        return await this.getDocuments(boxId, Outbound);
       } else {
         const text = await response.text();
         throw new Error(text);
       }
     }
-    const text = await response.json();
-    return text;
+    return await response.json();
   }
 
   async getDocument(boxId, messageId, entityId, injectEntityContent) {
@@ -194,16 +198,15 @@ export default class DocumentsClient {
     };
     const response = await fetch(url, options);
     if (!response.ok) {
-      if (response.status == 401) {
+      if (response.status === 401) {
         await this.authenticate.auth();
-        return this.getDocument(boxId, messageId, entityId, injectEntityContent);
+        return await this.getDocument(boxId, messageId, entityId, injectEntityContent);
       } else {
         const text = await response.text();
         throw new Error(text);
       }
     }
-    const text = await response.json();
-    return text;
+    return await response.json();
   }
 
   async getEntityContent(boxId, messageId, entityId) {
@@ -227,16 +230,15 @@ export default class DocumentsClient {
     };
     const response = await fetch(url, options);
     if (!response.ok) {
-      if (response.status == 401) {
+      if (response.status === 401) {
         await this.authenticate.auth();
-        return this.getEntityContent(boxId, messageId, entityId);
+        return await this.getEntityContent(boxId, messageId, entityId);
       } else {
         const text = await response.text();
         throw new Error(text);
       }
     }
-    const text = await response.buffer();
-    return text;
+    return await response.buffer();
   }
 
   async getDocumentTypes(boxId) {
@@ -256,16 +258,15 @@ export default class DocumentsClient {
     };
     const response = await fetch(url, options);
     if (!response.ok) {
-      if (response.status == 401) {
+      if (response.status === 401) {
         await this.authenticate.auth();
-        return this.getDocumentTypes(boxId);
+        return await this.getDocumentTypes(boxId);
       } else {
         const text = await response.text();
         throw new Error(text);
       }
     }
-    const text = await response.json();
-    return text;
+    return await response.json();
   }
 
   async generatePrintForm(boxId, messageId, documentId) {
@@ -289,17 +290,30 @@ export default class DocumentsClient {
           this.authenticate.getToken()
       }
     };
+    let result;
     const response = await fetch(url, options);
     if (!response.ok) {
-      if (response.status == 401) {
+      if (response.status === 401) {
         await this.authenticate.auth();
-        return this.generatePrintForm(boxId, messageId, documentId);
+        return await this.generatePrintForm(boxId, messageId, documentId);
       } else {
         const text = await response.text();
         throw new Error(text);
       }
     }
-    const text = await response.buffer();
-    return text;
+    const headers = await response.headers;
+    if (headers.get('dont-retry') !== 'True') {
+      const retry = Number(headers.get('Retry-After'));
+      await Timeout.set(retry * 1000);
+      return await this.generatePrintForm(boxId, messageId, documentId);
+    } else {
+      const doc_name = headers.get('content-disposition').split(';')[1].split('=')[1].slice(1, -1);
+      const text = await response.buffer();
+      result = {
+        filename: doc_name,
+        filecontent: text
+      };
+    }
+    return result;
   }
 }
