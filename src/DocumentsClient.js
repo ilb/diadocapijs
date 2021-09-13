@@ -302,8 +302,13 @@ export default class DocumentsClient {
       }
     }
     const headers = await response.headers;
-    if (headers.get('dont-retry') !== 'True') {
-      const retry = Number(headers.get('Retry-After'));
+    // const dontRetry = headers.get('dont-retry');
+    // const retryAfter = headers.get('retry-after');
+    // const xKonturDontRetry = headers.get('x-kontur-dont-retry');
+
+    // console.log({ response, headers, dontRetry, retryAfter, xKonturDontRetry });
+    if (headers.get('retry-after')) {
+      const retry = Number(headers.get('retry-after'));
       await Timeout.set(retry * 1000);
       return await this.generatePrintForm(boxId, messageId, documentId);
     } else {
