@@ -10,7 +10,8 @@ import { Buffer } from 'buffer';
 test('postDocument', async () => {
   const auth = new Authenticate({
     login: process.env.DIADOC_LOGIN,
-    password: process.env.DIADOC_PASSWORD
+    password: process.env.DIADOC_PASSWORD,
+    apiClientId: process.env.API_CLIENT_ID
   });
   const organizacionClient = new OrganizationsClient(auth);
   const myOrganizations = await organizacionClient.getMyOrganizacion();
@@ -42,7 +43,8 @@ test('postDocument', async () => {
 test('postDocumentArray', async () => {
   const auth = new Authenticate({
     login: process.env.DIADOC_LOGIN,
-    password: process.env.DIADOC_PASSWORD
+    password: process.env.DIADOC_PASSWORD,
+    apiClientId: process.env.API_CLIENT_ID
   });
   const organizacionClient = new OrganizationsClient(auth);
   const myOrganizations = await organizacionClient.getMyOrganizacion();
@@ -101,7 +103,8 @@ test('postDocumentArray', async () => {
 test('getDocuments', async () => {
   const auth = new Authenticate({
     login: process.env.DIADOC_LOGIN,
-    password: process.env.DIADOC_PASSWORD
+    password: process.env.DIADOC_PASSWORD,
+    apiClientId: process.env.API_CLIENT_ID
   });
   const organizacionClient = new OrganizationsClient(auth);
   const myOrganizations = await organizacionClient.getMyOrganizacion();
@@ -117,7 +120,8 @@ test('getDocuments', async () => {
 test('getDocument', async () => {
   const auth = new Authenticate({
     login: process.env.DIADOC_LOGIN,
-    password: process.env.DIADOC_PASSWORD
+    password: process.env.DIADOC_PASSWORD,
+    apiClientId: process.env.API_CLIENT_ID
   });
   const organizacionClient = new OrganizationsClient(auth);
   const myOrganizations = await organizacionClient.getMyOrganizacion();
@@ -139,7 +143,8 @@ test('getDocument', async () => {
 test('GetEntityContent', async () => {
   const auth = new Authenticate({
     login: process.env.DIADOC_LOGIN,
-    password: process.env.DIADOC_PASSWORD
+    password: process.env.DIADOC_PASSWORD,
+    apiClientId: process.env.API_CLIENT_ID
   });
   const organizacionClient = new OrganizationsClient(auth);
   const myOrganizations = await organizacionClient.getMyOrganizacion();
@@ -172,7 +177,8 @@ test('GetEntityContent', async () => {
 test('postMessagePatch', async () => {
   const auth = new Authenticate({
     login: process.env.DIADOC_LOGIN,
-    password: process.env.DIADOC_PASSWORD
+    password: process.env.DIADOC_PASSWORD,
+    apiClientId: process.env.API_CLIENT_ID
   });
   const organizacionClient = new OrganizationsClient(auth);
   const myOrganizations = await organizacionClient.getMyOrganizacion();
@@ -227,7 +233,8 @@ test('postMessagePatch', async () => {
 test('printDocument', async () => {
   const auth = new Authenticate({
     login: process.env.DIADOC_LOGIN,
-    password: process.env.DIADOC_PASSWORD
+    password: process.env.DIADOC_PASSWORD,
+    apiClientId: process.env.API_CLIENT_ID
   });
   const organizacionClient = new OrganizationsClient(auth);
   const myOrganizations = await organizacionClient.getMyOrganizacion();
