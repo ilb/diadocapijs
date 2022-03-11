@@ -26,7 +26,7 @@ export default class DocumentsClient {
         Accept: 'application/json',
         Authorization:
           'DiadocAuth ddauth_api_client_id=' +
-          process.env.API_CLIENT_ID +
+          this.authenticate.apiClientId +
           ',ddauth_token=' +
           this.authenticate.getToken()
       },
@@ -82,7 +82,7 @@ export default class DocumentsClient {
         Accept: 'application/json',
         Authorization:
           'DiadocAuth ddauth_api_client_id=' +
-          process.env.API_CLIENT_ID +
+          this.authenticate.apiClientId +
           ',ddauth_token=' +
           this.authenticate.getToken()
       },
@@ -123,7 +123,7 @@ export default class DocumentsClient {
         Accept: 'application/json',
         Authorization:
           'DiadocAuth ddauth_api_client_id=' +
-          process.env.API_CLIENT_ID +
+          this.authenticate.apiClientId +
           ',ddauth_token=' +
           this.authenticate.getToken()
       },
@@ -156,7 +156,7 @@ export default class DocumentsClient {
         Accept: 'application/json',
         Authorization:
           'DiadocAuth ddauth_api_client_id=' +
-          process.env.API_CLIENT_ID +
+          this.authenticate.apiClientId +
           ',ddauth_token=' +
           this.authenticate.getToken()
       }
@@ -191,7 +191,7 @@ export default class DocumentsClient {
         Accept: 'application/json',
         Authorization:
           'DiadocAuth ddauth_api_client_id=' +
-          process.env.API_CLIENT_ID +
+          this.authenticate.apiClientId +
           ',ddauth_token=' +
           this.authenticate.getToken()
       }
@@ -223,7 +223,7 @@ export default class DocumentsClient {
         'Content-Type': 'application/json',
         Authorization:
           'DiadocAuth ddauth_api_client_id=' +
-          process.env.API_CLIENT_ID +
+          this.authenticate.apiClientId +
           ',ddauth_token=' +
           this.authenticate.getToken()
       }
@@ -251,7 +251,7 @@ export default class DocumentsClient {
         Accept: 'application/json',
         Authorization:
           'DiadocAuth ddauth_api_client_id=' +
-          process.env.API_CLIENT_ID +
+          this.authenticate.apiClientId +
           ',ddauth_token=' +
           this.authenticate.getToken()
       }
@@ -285,7 +285,7 @@ export default class DocumentsClient {
         Accept: 'application/json',
         Authorization:
           'DiadocAuth ddauth_api_client_id=' +
-          process.env.API_CLIENT_ID +
+          this.authenticate.apiClientId +
           ',ddauth_token=' +
           this.authenticate.getToken()
       }
