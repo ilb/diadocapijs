@@ -6,7 +6,8 @@ import OrganizationsClient from '../src/OrganizationsClient.js';
 test('GetMyOrganizacion', async () => {
   const auth = new Authenticate({
     login: process.env.DIADOC_LOGIN,
-    password: process.env.DIADOC_PASSWORD
+    password: process.env.DIADOC_PASSWORD,
+    apiClientId: process.env.API_CLIENT_ID
   });
   const organizacion = new OrganizationsClient(auth);
   const res = await organizacion.getMyOrganizacion();
@@ -17,7 +18,8 @@ test('GetMyOrganizacion', async () => {
 test('GetOrganizationsByInnKpp - accept', async () => {
   const auth = new Authenticate({
     login: process.env.DIADOC_LOGIN,
-    password: process.env.DIADOC_PASSWORD
+    password: process.env.DIADOC_PASSWORD,
+    apiClientId: process.env.API_CLIENT_ID
   });
   const organizacion = new OrganizationsClient(auth);
   const myOrganizations = await organizacion.getMyOrganizacion();
@@ -32,7 +34,8 @@ test('GetOrganizationsByInnKpp - accept', async () => {
 test('GetOrganizationsByInnKpp - error', async () => {
   const auth = new Authenticate({
     login: process.env.DIADOC_LOGIN,
-    password: process.env.DIADOC_PASSWORD
+    password: process.env.DIADOC_PASSWORD,
+    apiClientId: process.env.API_CLIENT_ID
   });
   const organizacion = new OrganizationsClient(auth);
   const myOrganizations = await organizacion.getMyOrganizacion();
@@ -47,7 +50,8 @@ test('GetOrganizationsByInnKpp - error', async () => {
 test('getOrganizationUsers', async () => {
   const auth = new Authenticate({
     login: process.env.DIADOC_LOGIN,
-    password: process.env.DIADOC_PASSWORD
+    password: process.env.DIADOC_PASSWORD,
+    apiClientId: process.env.API_CLIENT_ID
   });
   const organizacion = new OrganizationsClient(auth);
   const myOrganizations = await organizacion.getMyOrganizacion();

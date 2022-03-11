@@ -5,7 +5,8 @@ import Authenticate from '../src/Authenticate.js';
 test('authenticate', async () => {
   const auth = new Authenticate({
     login: process.env.DIADOC_LOGIN,
-    password: process.env.DIADOC_PASSWORD
+    password: process.env.DIADOC_PASSWORD,
+    apiClientId: process.env.API_CLIENT_ID
   });
   await auth.auth();
   console.log(auth.getToken());

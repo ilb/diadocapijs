@@ -1,11 +1,12 @@
 import fetch from 'isomorphic-fetch';
 
 export default class Authenticate {
-  constructor({ login, password }) {
+  constructor({ login, password, apiClientId }) {
     this.login = login;
     this.password = password;
+    this.apiClientId = apiClientId;
   }
- 
+
   async auth() {
     const url = 'https://diadoc-api.kontur.ru/V3/Authenticate?type=password';
     const login = this.login;
@@ -15,7 +16,7 @@ export default class Authenticate {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'DiadocAuth ddauth_api_client_id=' + process.env.API_CLIENT_ID
+        Authorization: 'DiadocAuth ddauth_api_client_id=' + this.apiClientId
       },
       body: JSON.stringify(data)
     };
