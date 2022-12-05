@@ -64,10 +64,16 @@ test('postDocumentArray', async () => {
   let Content1 = Buffer.from(
     fs.readFileSync(path.resolve('test/data/testFile.txt').toString())
   ).toString('base64');
+
+  let Signature1 = Buffer.from('ЭЛЕПТРОННАЯ ПОДПИСЬ В ВИДЕ bytes ').toString('base64'); // подставить ЭП bytes 
+
   let FileName2 = path.basename(path.resolve('test/data/testFile2.txt').toString());
   let Content2 = Buffer.from(
     fs.readFileSync(path.resolve('test/data/testFile2.txt').toString())
   ).toString('base64');
+  
+  let Signature2 = Buffer.from('ЭЛЕПТРОННАЯ ПОДПИСЬ В ВИДЕ bytes ').toString('base64'); // подставить ЭП bytes 
+
   const res = await documentsClient.postMessageArray({
     FromBoxId: myOrganizations['Organizations'][0]['Boxes'][0]['BoxId'],
     ToBoxId: organizationsByInnKpp['Organizations'][0]['Boxes'][0]['BoxId'],
@@ -76,7 +82,8 @@ test('postDocumentArray', async () => {
       {
         TypeNamedId: documentTypes.DocumentTypes[0].Name,
         SignedContent: {
-          Content: Content1
+          Content: Content1,
+          Signature: Signature1
         },
         Metadata: [
           {
@@ -89,7 +96,8 @@ test('postDocumentArray', async () => {
       {
         TypeNamedId: documentTypes.DocumentTypes[0].Name,
         SignedContent: {
-          Content: Content2
+          Content: Content2,
+          Signature: Signature2
         },
         Metadata: [
           {
