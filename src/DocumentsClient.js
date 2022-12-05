@@ -51,6 +51,7 @@ export default class DocumentsClient {
     DelaySend,
     TypeNamedId,
     Content,
+    Signature,
     Value,
     NeedRecipientSignature
   }) {
@@ -62,7 +63,8 @@ export default class DocumentsClient {
         {
           TypeNamedId,
           SignedContent: {
-            Content
+            Content,
+            Signature
           },
           Metadata: [
             {

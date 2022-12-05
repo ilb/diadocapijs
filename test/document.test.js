@@ -27,6 +27,9 @@ test('postDocument', async () => {
   let Content = Buffer.from(
     fs.readFileSync(path.resolve('test/data/testFile.txt').toString())
   ).toString('base64');
+
+  let Signature = Buffer.from('ЭЛЕПТРОННАЯ ПОДПИСЬ В ВИДЕ bytes ').toString('base64'); // подставить ЭП bytes 
+
   const res = await documentsClient.postMessage({
     FromBoxId: myOrganizations['Organizations'][0]['Boxes'][0]['BoxId'],
     ToBoxId: organizationsByInnKpp['Organizations'][0]['Boxes'][0]['BoxId'],
@@ -34,6 +37,7 @@ test('postDocument', async () => {
     TypeNamedId: documentTypes.DocumentTypes[0].Name,
     Value: FileName,
     Content,
+    Signature,
     NeedRecipientSignature: true // запрос на подпись у получающего
   });
   console.log(res);
