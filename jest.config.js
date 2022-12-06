@@ -3,5 +3,6 @@
 
 export default {
   testEnvironment: 'jest-environment-node',
-  transform: {}
+  transform: {},
+  transformIgnorePatterns: ['<rootDir>/node_modules/']
 };

@@ -16,34 +16,37 @@ test('postDocument', async () => {
   const organizacionClient = new OrganizationsClient(auth);
   const myOrganizations = await organizacionClient.getMyOrganizacion();
   const organizationsByInnKpp = await organizacionClient.getOrganizationsByInnKpp(
-    '9622992710',
+    process.env.TO_INN_KPP,
     myOrganizations['Organizations'][0]['Boxes'][0]['BoxId']
   );
   const documentsClient = new DocumentsClient(auth);
   const documentTypes = await documentsClient.getDocumentTypes(
     myOrganizations['Organizations'][0]['Boxes'][0]['BoxId']
   );
-  let FileName = path.basename(path.resolve('test/data/testFile.txt').toString());
-  let Content = Buffer.from(
-    fs.readFileSync(path.resolve('test/data/testFile.txt').toString())
-  ).toString('base64');
+  const filePath = 'test/data/Тестовый_документ.pdf';
+  const fileSgnPath = 'test/data/Тестовый_документ.pdf.sgn';
+  let FileName = path.basename(path.resolve(filePath).toString());
+  let Content = Buffer.from(fs.readFileSync(path.resolve(filePath).toString())).toString('base64');
 
-  let Signature = Buffer.from('ЭЛЕПТРОННАЯ ПОДПИСЬ В ВИДЕ bytes ').toString('base64'); // подставить ЭП bytes 
+  let Signature = Buffer.from(fs.readFileSync(path.resolve(fileSgnPath).toString())).toString(
+    'base64'
+  ); // подставить ЭП bytes
 
   const res = await documentsClient.postMessage({
     FromBoxId: myOrganizations['Organizations'][0]['Boxes'][0]['BoxId'],
     ToBoxId: organizationsByInnKpp['Organizations'][0]['Boxes'][0]['BoxId'],
-    DelaySend: true,
+    DelaySend: false,
     TypeNamedId: documentTypes.DocumentTypes[0].Name,
     Value: FileName,
     Content,
     Signature,
     NeedRecipientSignature: true // запрос на подпись у получающего
   });
-  console.log(res);
+  console.log(res.Entities[0]);
   expect(typeof res === 'object').toStrictEqual(true);
 });
 
+/*
 test('postDocumentArray', async () => {
   const auth = new Authenticate({
     login: process.env.DIADOC_LOGIN,
@@ -65,14 +68,14 @@ test('postDocumentArray', async () => {
     fs.readFileSync(path.resolve('test/data/testFile.txt').toString())
   ).toString('base64');
 
-  let Signature1 = Buffer.from('ЭЛЕПТРОННАЯ ПОДПИСЬ В ВИДЕ bytes ').toString('base64'); // подставить ЭП bytes 
+  let Signature1 = Buffer.from('ЭЛЕПТРОННАЯ ПОДПИСЬ В ВИДЕ bytes ').toString('base64'); // подставить ЭП bytes
 
   let FileName2 = path.basename(path.resolve('test/data/testFile2.txt').toString());
   let Content2 = Buffer.from(
     fs.readFileSync(path.resolve('test/data/testFile2.txt').toString())
   ).toString('base64');
-  
-  let Signature2 = Buffer.from('ЭЛЕПТРОННАЯ ПОДПИСЬ В ВИДЕ bytes ').toString('base64'); // подставить ЭП bytes 
+
+  let Signature2 = Buffer.from('ЭЛЕПТРОННАЯ ПОДПИСЬ В ВИДЕ bytes ').toString('base64'); // подставить ЭП bytes
 
   const res = await documentsClient.postMessageArray({
     FromBoxId: myOrganizations['Organizations'][0]['Boxes'][0]['BoxId'],
@@ -224,12 +227,12 @@ test('postMessagePatch', async () => {
     CanDeleteRestoreDocuments - может ли пользователь удалять документы и черновики, восстанавливать документы
   */
 
-  /* варианты передачи документа
+/* варианты передачи документа
     ApprovementRequest - запрос на согласование документа. Подразумевает два возможных действия — Согласовать (ApproveAction) или Отказать в согласовании (DisapproveAction).
     SignatureRequest - запрос на подпись документа. В рамках запроса можно выполнить три действия — Подписать завершающей подписью (SignWithPrimarySignature)/Отказать в подписи контрагенту (RejectSigning) или Отказать в подписи сотруднику (DenySignatureRequest), который запросил подпись.
     ApprovementSignatureRequest - запрос на согласующую подпись под документом. В рамках данного типа запроса можно либо Подписать согласующей подписью (SignWithApprovementSignature), либо Отказать в подписи сотруднику (DenySignatureRequest), который запросил подпись.
   */
-  const res = await documentsClient.postMessagePatch(
+/* const res = await documentsClient.postMessagePatch(
     myOrganizations['Organizations'][0]['Boxes'][0]['BoxId'],
     getDocuments['Documents'][getDocuments['Documents'].length - 1]['MessageId'],
     getDocuments['Documents'][getDocuments['Documents'].length - 1]['EntityId'],
@@ -262,4 +265,4 @@ test('printDocument', async () => {
   );
   console.log(res);
   expect(typeof res === 'object').toStrictEqual(true);
-});
+});*/
