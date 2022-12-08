@@ -23,8 +23,8 @@ test('postDocument', async () => {
   const documentTypes = await documentsClient.getDocumentTypes(
     myOrganizations['Organizations'][0]['Boxes'][0]['BoxId']
   );
-  const filePath = 'test/data/Тестовый_документ.pdf';
-  const fileSgnPath = 'test/data/Тестовый_документ.pdf.sgn';
+  const filePath = 'test/data/testdoc.pdf';
+  const fileSgnPath = 'test/data/testdoc.sgn';
   let FileName = path.basename(path.resolve(filePath).toString());
   let Content = Buffer.from(fs.readFileSync(path.resolve(filePath).toString())).toString('base64');
 
